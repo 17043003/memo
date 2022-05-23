@@ -1,16 +1,15 @@
 package com.ishzk.android.memo
 
+import android.content.ComponentName
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName
-import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.intent.Intents.getIntents
+import androidx.test.ext.truth.content.IntentSubject.assertThat
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,9 +29,14 @@ class OpenNewMemoInstrumentedTest {
     fun pushNewMemoButton_test(){
         onView(withId(R.id.fabNewMemoButton))
             .perform(click())
-        
-        intended(allOf(
-            hasComponent(hasShortClassName(".NewMemoActivity")),
-            ))
+
+        val intents = getIntents()
+        val intent = intents.last()
+        assertThat(intent).hasComponent(ComponentName(
+            "com.ishzk.android.memo", "com.ishzk.android.memo.NewMemoActivity"
+        ))
+
+        onView(withId(R.id.editTextTitle))
+            .perform(typeText("test title"))
     }
 }
