@@ -6,12 +6,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import com.ishzk.android.memo.Model.Memo
-import com.ishzk.android.memo.Repository.FireStoreMemoRepository
 import com.ishzk.android.memo.Repository.MemoRepository
+import com.ishzk.android.memo.di.FireStoreMemo
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NewMemoActivity : AppCompatActivity() {
-    private val memoRepository: MemoRepository = FireStoreMemoRepository()
+    @FireStoreMemo
+    @Inject
+    lateinit var memoRepository: MemoRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
