@@ -2,15 +2,21 @@ package com.ishzk.android.memo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
+import android.widget.Toast
 import com.ishzk.android.memo.Model.Memo
 import com.ishzk.android.memo.Repository.MemoRepository
 import com.ishzk.android.memo.di.FireStoreMemo
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+
+private const val TAG = "NewMemoActivity"
 
 @AndroidEntryPoint
 class NewMemoActivity : AppCompatActivity() {
@@ -31,14 +37,15 @@ class NewMemoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menu_save_button -> {
-                val calendar = Calendar.getInstance()
+                val date = Date()
                 val (title, content) = getMemoTexts()
+
                 memoRepository.saveMemo(
                     Memo(
                         title = title,
                         content = content,
-                        createdAt = calendar,
-                        updatedAt = calendar,
+                        createdAt = date,
+                        updatedAt = date,
                     )
                 )
             }

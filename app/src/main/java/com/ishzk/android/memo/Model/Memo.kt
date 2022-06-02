@@ -1,10 +1,13 @@
 package com.ishzk.android.memo.Model
 
+import com.google.firebase.firestore.DocumentId
 import java.util.*
 
 data class Memo(
-    val title: String,
-    val content: String,
-    val createdAt: Calendar,
-    val updatedAt: Calendar,
+    @DocumentId
+    val id: String = "",
+    val title: String = "",
+    val content: String = "",
+    val createdAt: Date = Date(),
+    val updatedAt: Date = Date(),
 )
