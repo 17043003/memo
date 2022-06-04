@@ -4,4 +4,7 @@
     <string name="NewMemoTitle">Title</string>
     <string name="memo_text_description">Edit memo\'s content.</string>
     <string name="menu_save_button">Save</string>
+    <string name="content_summary">This text is memo content.\n too long content is shoten......</string>
+    <string name="menu_created_time">Created at : 2022/1/1 12:34</string>
+    <string name="menu_updated_time">Updated at : 2022/1/1 23:56</string>
 </resources>
