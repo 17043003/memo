@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -9,6 +9,7 @@
         android:id="@+id/memoTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4sp"
         android:textSize="24sp"
         tools:text="@string/NewMemoTitle" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/contentSummaryText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8sp"
         android:textSize="16sp"
         tools:text="@string/content_summary" />
 
