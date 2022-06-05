@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         adapter = MemoRecyclerAdapter(options)
 
         val memoMenu: RecyclerView = findViewById(R.id.memoListView)
+        setRecyclerView(memoMenu)
+    }
+
+    // set some params to recyclerview to restart recyclerview after activity restart.
+    private fun setRecyclerView(memoMenu: RecyclerView){
         memoMenu.let {
             it.layoutManager = LinearLayoutManager(this@MainActivity)
             it.adapter = adapter
@@ -59,6 +64,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        val memoMenu: RecyclerView = findViewById(R.id.memoListView)
+        setRecyclerView(memoMenu)
+
         adapter.startListening()
     }
 
