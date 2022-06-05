@@ -17,6 +17,8 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "FireStoreMemoRepository"
 
 class FireStoreMemoRepository: MemoRepository {
+    private val db by lazy { Firebase.firestore }
+
     override fun saveMemo(memo: Memo) {
         if(memo.id.isEmpty()){
             createMemo(memo)
@@ -26,7 +28,6 @@ class FireStoreMemoRepository: MemoRepository {
     }
 
     private fun createMemo(memo: Memo){
-        val db = Firebase.firestore
         db.collection("memos")
             .add(memo)
             .addOnSuccessListener {
@@ -38,7 +39,6 @@ class FireStoreMemoRepository: MemoRepository {
     }
 
     private fun updateMemo(memo: Memo) {
-        val db = Firebase.firestore
         if(memo.id.isEmpty()) return
 
         db.collection("memos")
@@ -47,14 +47,12 @@ class FireStoreMemoRepository: MemoRepository {
     }
 
     override fun fetchMemos(): Query {
-        val db = Firebase.firestore
         return db.collection("memos")
             .orderBy("updatedAt", Query.Direction.ASCENDING)
             .limit(50)
     }
 
     override fun fetchMemo(id: String): Memo {
-        val db = Firebase.firestore
         val task = db.collection("memos")
             .document(id)
             .get()
@@ -69,6 +67,12 @@ class FireStoreMemoRepository: MemoRepository {
 
         }
         return task.result.toObject(Memo::class.java) ?: throw FetchException("fetch error from firestore: ${task.result.id}")
+    }
+
+    override fun deleteMemo(id: String) {
+        db.collection("memos")
+            .document(id)
+            .delete()
     }
 }
 
