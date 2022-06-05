@@ -7,4 +7,6 @@
     <string name="content_summary">This text is memo content.\n too long content is shoten......</string>
     <string name="menu_created_time">Created at : 2022/1/1 12:34</string>
     <string name="menu_updated_time">Updated at : 2022/1/1 23:56</string>
+    <string name="delete_dialog_title">Delete this memo</string>
+    <string name="delete_dialog_message">Can you delete this memo?</string>
 </resources>

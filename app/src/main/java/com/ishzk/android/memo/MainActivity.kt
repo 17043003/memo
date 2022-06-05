@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,6 @@ import com.ishzk.android.memo.Repository.FetchException
 import com.ishzk.android.memo.Repository.MemoRepository
 import com.ishzk.android.memo.di.FireStoreMemo
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity() {
 
             // set click listener to each items.
             holder.itemView.setOnClickListener(ItemClickListener(model))
+
+            // set long click listener to delete item.
+            holder.itemView.setOnLongClickListener(ItemLongClickListener(model))
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoHolder {
@@ -118,6 +121,25 @@ class MainActivity : AppCompatActivity() {
             }catch (e: FetchException){
                 Toast.makeText(this@MainActivity, "Error: $e", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private inner class ItemLongClickListener(private val data: Memo): View.OnLongClickListener {
+        override fun onLongClick(view: View): Boolean {
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle(R.string.delete_dialog_title)
+                .setMessage(R.string.delete_dialog_message)
+                .setPositiveButton("OK"){ dialog, _ ->
+                    memoRepository.deleteMemo(data.id)
+                    dialog.cancel()
+                    Toast.makeText(this@MainActivity, "Memo is deleted.", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("NO"){ dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+
+            return true
         }
     }
 }
