@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -44,8 +45,14 @@ class MainActivity : AppCompatActivity() {
         adapter = MemoRecyclerAdapter(options)
 
         val memoMenu: RecyclerView = findViewById(R.id.memoListView)
-        memoMenu.layoutManager = LinearLayoutManager(this@MainActivity)
-        memoMenu.adapter = adapter
+        memoMenu.let {
+            it.layoutManager = LinearLayoutManager(this@MainActivity)
+            it.adapter = adapter
+
+            // show decorator line at RecyclerView items.
+            val decorator = DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL)
+            it.addItemDecoration(decorator)
+        }
     }
 
     override fun onStart() {
