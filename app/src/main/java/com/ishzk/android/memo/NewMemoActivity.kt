@@ -24,9 +24,18 @@ class NewMemoActivity : AppCompatActivity() {
     @Inject
     lateinit var memoRepository: MemoRepository
 
+    var memoId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_memo)
+
+        memoId = intent.extras?.get("id") as String?
+        if(!memoId.isNullOrEmpty()){
+            val title = intent.extras?.get("title") as String? ?: ""
+            val content = intent.extras?.get("content") as String? ?: ""
+            setMemoTexts(title = title, content = content)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,15 +46,13 @@ class NewMemoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menu_save_button -> {
-                val date = Date()
                 val (title, content) = getMemoTexts()
 
                 memoRepository.saveMemo(
                     Memo(
+                        id = memoId ?: "",
                         title = title,
                         content = content,
-                        createdAt = date,
-                        updatedAt = date,
                     )
                 )
             }
@@ -58,6 +65,14 @@ class NewMemoActivity : AppCompatActivity() {
         val contentEditText: EditText = findViewById(R.id.editTextMemo)
 
         return EditedText(titleEditText.text.toString(), contentEditText.text.toString())
+    }
+
+    private fun setMemoTexts(title: String, content: String){
+        val titleEditText: EditText = findViewById(R.id.editTextTitle)
+        titleEditText.setText(title)
+
+        val contentEditText: EditText = findViewById(R.id.editTextMemo)
+        contentEditText.setText(content)
     }
 
     data class EditedText(

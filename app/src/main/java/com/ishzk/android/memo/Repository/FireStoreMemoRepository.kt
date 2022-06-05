@@ -18,6 +18,14 @@ private const val TAG = "FireStoreMemoRepository"
 
 class FireStoreMemoRepository: MemoRepository {
     override fun saveMemo(memo: Memo) {
+        if(memo.id.isEmpty()){
+            createMemo(memo)
+        }else{
+            updateMemo(memo)
+        }
+    }
+
+    private fun createMemo(memo: Memo){
         val db = Firebase.firestore
         db.collection("memos")
             .add(memo)
@@ -27,6 +35,15 @@ class FireStoreMemoRepository: MemoRepository {
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding memo.", e)
             }
+    }
+
+    private fun updateMemo(memo: Memo) {
+        val db = Firebase.firestore
+        if(memo.id.isEmpty()) return
+
+        db.collection("memos")
+            .document(memo.id)
+            .update(mapOf("title" to memo.title, "content" to memo.content, "updatedAt" to Date()))
     }
 
     override fun fetchMemos(): Query {

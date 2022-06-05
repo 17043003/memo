@@ -107,7 +107,14 @@ class MainActivity : AppCompatActivity() {
         override fun onClick(view: View) {
             try{
                 val memo = memoRepository.fetchMemo(data.id)
-                Toast.makeText(this@MainActivity, "ID:${memo.id}, title:${memo.title}", Toast.LENGTH_SHORT).show()
+
+                // gives extras and shows NewMemoActivity
+                val intent = Intent(this@MainActivity, NewMemoActivity::class.java)
+                intent.putExtra("id", memo.id)
+                intent.putExtra("title", memo.title)
+                intent.putExtra("content", memo.content)
+                startActivity(intent)
+
             }catch (e: FetchException){
                 Toast.makeText(this@MainActivity, "Error: $e", Toast.LENGTH_LONG).show()
             }
