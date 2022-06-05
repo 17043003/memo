@@ -6,4 +6,5 @@ import com.ishzk.android.memo.Model.Memo
 interface MemoRepository {
     fun saveMemo(memo: Memo)
     fun fetchMemos(): Query
+    fun fetchMemo(id: String): Memo
 }

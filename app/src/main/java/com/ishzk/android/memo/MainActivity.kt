@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ishzk.android.memo.Model.Memo
+import com.ishzk.android.memo.Repository.FetchException
 import com.ishzk.android.memo.Repository.MemoRepository
 import com.ishzk.android.memo.di.FireStoreMemo
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +70,9 @@ class MainActivity : AppCompatActivity() {
     private inner class MemoRecyclerAdapter(options: FirestoreRecyclerOptions<Memo>): FirestoreRecyclerAdapter<Memo, MemoHolder>(options){
         override fun onBindViewHolder(holder: MemoHolder, position: Int, model: Memo) {
             holder.setMemoMenu(model)
+
+            // set click listener to each items.
+            holder.itemView.setOnClickListener(ItemClickListener(model))
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoHolder {
@@ -86,6 +91,17 @@ class MainActivity : AppCompatActivity() {
             createdTimeRow.text =  memo.formattedCreatedDate
             val updatedTimeRow: TextView = itemView.findViewById(R.id.updatedAtText)
             updatedTimeRow.text =  memo.formattedUpdatedDate
+        }
+    }
+
+    private inner class ItemClickListener(private val data: Memo): View.OnClickListener {
+        override fun onClick(view: View) {
+            try{
+                val memo = memoRepository.fetchMemo(data.id)
+                Toast.makeText(this@MainActivity, "ID:${memo.id}, title:${memo.title}", Toast.LENGTH_SHORT).show()
+            }catch (e: FetchException){
+                Toast.makeText(this@MainActivity, "Error: $e", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
